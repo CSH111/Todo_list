@@ -5,6 +5,51 @@ const textInput = document.body.querySelector("form#toDoForm #textInput");
 const submitBtn = document.body.querySelector("form#toDoForm #submitBtn");
 let toDoArray = [];
 let strikedArray = [];
+
+toDoForm.addEventListener("submit", toDoSubmit);
+if (localStorage.getItem("toDoDB") != null) {
+  const listData = JSON.parse(localStorage.getItem("toDoDB"));
+  listData.forEach(paintToDo);
+  toDoArray = listData;
+  const strikedData = JSON.parse(localStorage.getItem("striked"));
+  strikedArray = strikedData;
+
+  const lis = document.querySelector("#toDoList").childNodes;
+
+  for (let i = 0; i < lis.length; i++) {
+    if (strikedArray.includes(lis[i].firstChild.id)) {
+      lis[i].firstChild.lastChild.classList.add("strike");
+    }
+  }
+} else {
+  arrToLocal(); //빈 array
+  strikeArrToLocal(); //빈 array
+}
+updateRestCount();
+
+function paintToDo(toDoObj) {
+  const toDoList = document.body.querySelector("#toDoList");
+  const li = document.createElement("li");
+  const div = document.createElement("div");
+  makeStrikeBtn(div); //원래꺼
+  objToLi(div, toDoObj);
+  li.appendChild(div);
+  makeDelBtn(li);
+
+  toDoList.appendChild(li); //원래꺼
+
+  textInput.value = "";
+}
+
+function toDoSubmit(event) {
+  event.preventDefault();
+  const toDoObj = { text: textInput.value, id: Date.now() };
+  toDoArray.push(toDoObj);
+  arrToLocal();
+  paintToDo(toDoObj);
+  updateRestCount();
+}
+
 function arrToLocal() {
   localStorage.setItem("toDoDB", JSON.stringify(toDoArray));
 }
@@ -15,7 +60,7 @@ function strikeArrToLocal() {
 function makeStrikeBtn(li) {
   const strikeBtn = document.createElement("button");
   li.appendChild(strikeBtn);
-  strikeBtn.innerText = "v";
+  strikeBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
   strikeBtn.addEventListener("click", strike);
 }
 function filterStrikeArr(id) {
@@ -27,16 +72,13 @@ function strike(event) {
   const classList = event.target.nextSibling.classList;
   classList.toggle("strike");
 
-  console.log(classList);
-  console.log(typeof classList);
-
   if (classList.contains("strike") == true) {
     strikedArray.push(id);
   } else {
     filterStrikeArr(id);
   }
-
   strikeArrToLocal();
+  updateRestCount();
 }
 
 function makeDelBtn(li) {
@@ -47,55 +89,29 @@ function makeDelBtn(li) {
 }
 function deleteToDo(event) {
   const li = event.target.parentElement;
-  toDoArray = toDoArray.filter((item) => item.id != li.id);
+  toDoArray = toDoArray.filter((item) => item.id != li.firstChild.id);
   li.remove();
   arrToLocal();
-  filterStrikeArr(li.id);
+  filterStrikeArr(li.firstChild.id);
   strikeArrToLocal();
+  updateRestCount();
 }
-function objToLi(li, toDoObj) {
+function objToLi(div, toDoObj) {
   const span = document.createElement("span");
-  li.id = toDoObj.id;
-  li.appendChild(span);
+  div.id = toDoObj.id; //수정할곳
+  div.appendChild(span);
   span.innerText = toDoObj.text;
 }
 
-function paintToDo(toDoObj) {
-  const toDoList = document.body.querySelector("#toDoList");
-  const li = document.createElement("li");
-  makeStrikeBtn(li);
-  objToLi(li, toDoObj);
-  makeDelBtn(li);
-  toDoList.appendChild(li);
-  textInput.value = "";
-}
+function updateRestCount() {
+  const toDoDBCount = JSON.parse(localStorage.getItem("toDoDB")).length;
+  const rest = document.querySelector("#restCount");
+  const checkedDBCount = JSON.parse(localStorage.getItem("striked")).length;
 
-function toDoSubmit(event) {
-  event.preventDefault();
-  const toDoObj = { text: textInput.value, id: Date.now() };
-  toDoArray.push(toDoObj);
-  arrToLocal();
-  paintToDo(toDoObj);
-}
-
-toDoForm.addEventListener("submit", toDoSubmit);
-
-function checkStirke() {}
-
-if (localStorage.getItem("toDoDB") != null) {
-  // const listData2 = JSON.parse(localStorage.toDoDB);
-  const listData = JSON.parse(localStorage.getItem("toDoDB"));
-  listData.forEach(paintToDo);
-  toDoArray = listData;
-  const strikedData = JSON.parse(localStorage.getItem("striked"));
-  strikedArray = strikedData;
-
-  const ul = document.querySelector("#toDoList").childNodes;
-
-  for (let i = 0; i < ul.length; i++) {
-    if (strikedArray.includes(ul[i].id)) {
-      ul[i].firstChild.nextSibling.classList.add("strike");
-    }
+  if (toDoDBCount - checkedDBCount !== 0) {
+    rest.innerText = toDoDBCount - checkedDBCount + "개의 할 일이 있습니다";
+  } else {
+    rest.innerText = "할 일을 추가하세요.";
   }
 }
 
@@ -107,3 +123,12 @@ if (localStorage.getItem("toDoDB") != null) {
 //어레이요소 포함 확인 => includes (JS)
 //클래스리스트 포함 확인  => contains (API)
 //API 돔 JS 등 큰 틀에서의 명확한 개념공부가 필요해보인다....
+
+///추가하고싶은 기능////
+//클리어 올, 클리어 취소선// hover이용 x버튼 색깔표시
+
+//문제!!  버튼내부에 태그가 들어가면 클릭 이벤트 오류남  ==> 클릭이벤트시 부모자식 형제 요소 선택 이 달리지기 때문!
+// css 에서 pointer-events: none; 으로 오류 해결   ★★★★★★★★★★★★★
+
+// jS 의 firstChild: 자식요소중 첫번째
+// css의 first-child: 형제요소중 첫번째

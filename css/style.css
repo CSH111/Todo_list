@@ -1,4 +1,58 @@
+:root {
+  --margin-small: 10px;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+h1 {
+  font-size: 50px;
+}
+h2 {
+  font-size: 20px;
+}
 .strike {
   text-decoration: line-through;
   font-style: italic;
 }
+i {
+  pointer-events: none;
+}
+li {
+  display: flex;
+  flex-direction: row;
+}
+
+#wrap {
+  margin: 3vh auto;
+  max-width: 400px;
+  font-size: 30px;
+}
+#toDoList {
+  border: solid 1px;
+  width: 100%;
+  height: 50%;
+  max-height: 50vh;
+  min-height: 50vh;
+  overflow: auto;
+  padding: var(--margin-small);
+}
+#textInput {
+  font-size: 30px;
+}
+#submitBtn {
+}
+
+#toDoForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 30%;
+  /* min-height: 10vh; */
+  margin-top: var(--margin-small);
+}
+
+/* 체크만 삭제 버튼 호버시 체크항목에만 삭제표시 활성화되게
+전체 삭제시 전체 항목에 삭제표시 활성화 */
+/* 스크롤 형성시 맨아래 요소로 뷰이동 */
