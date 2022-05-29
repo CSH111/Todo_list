@@ -1,8 +1,6 @@
 .strike {
   text-decoration: line-through;
   font-style: italic;
-  color: rgba(0, 0, 0, 0.436);
-  background-color: #ef9a9a1f;
 }
 i {
   pointer-events: none;
@@ -68,7 +66,6 @@ li {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
   margin-bottom: var(--margin-small);
   font-size: var(--font-size-small);
 }
@@ -82,10 +79,6 @@ li > div > button {
   padding: var(--margin-small);
   margin-right: var(--margin-small);
   border-radius: var(--radius);
-}
-li > div > button:hover {
-  background-color: rgba(41, 204, 150, 0.588);
-  transition: background-color 0.3s;
 }
 li > div > span {
   width: 89%;
@@ -101,10 +94,6 @@ li > button {
   padding: var(--margin-small);
   border-radius: var(--radius);
 }
-li > button:hover {
-  background-color: rgba(254, 99, 9, 0.838);
-  transition: background-color 0.3s;
-}
 #toDoForm {
   display: flex;
   margin-top: var(--margin-small);
@@ -115,15 +104,8 @@ li > button:hover {
   font-size: var(--font-size-small);
   padding: var(--margin-small);
   margin-right: var(--margin-small);
-  background-color: rgba(255, 228, 196, 0.733);
-  border-radius: var(--radius);
-  border: solid 2px;
-  border-color: transparent;
-}
-#toDoForm input:focus {
-  outline: none;
-  border-color: rgb(208, 187, 161);
   background-color: bisque;
+  border-radius: var(--radius);
 }
 #toDoForm button {
   background-color: rgba(190, 190, 190, 0.793);
@@ -137,19 +119,12 @@ li > button:hover {
   opacity: 1;
   pointer-events: auto;
 }
-#toDoForm button.active:hover {
-  background-color: rgb(190, 190, 190);
-  transition: background-color 0.3s;
-}
-footer {
-  text-align: center;
-}
-/* 추가할 기능 */
+
 /* 체크만 삭제 버튼 호버시 체크항목에만 삭제표시 활성화되게
 전체 삭제시 전체 항목에 삭제표시 활성화 */
 /* 스크롤 형성시 맨아래 요소로 뷰이동 */
 
 /* 문제:  JS로 클래스를 추가해 기존 CSS 프로퍼티를 변경시 미작동
-  원인:css 셀럭터 입력시 전체 클래스대상으로 하면 미작동하는 태그들이 있음
-  해결:  -> 변경 하고자 하는 개별 요소에 CSS입력!!
+  원인:css 셀럭터 입력시 전체 클래스대상으로 하면 미작동
+  해결:  -> 프로퍼티 변경 하고자 하는 개별 요소에 직접 CSS입력!!
 */

@@ -3,10 +3,21 @@
 const toDoForm = document.body.querySelector("form#toDoForm");
 const textInput = document.body.querySelector("form#toDoForm #textInput");
 const submitBtn = document.body.querySelector("form#toDoForm #submitBtn");
+const ul = document.body.querySelector("toDoList");
 let toDoArray = [];
 let strikedArray = [];
 
+textInput.focus();
+textInput.onkeyup = () => {
+  if (textInput.value.trim() != "") {
+    submitBtn.classList.add("active");
+  } else {
+    submitBtn.classList.remove("active");
+  }
+};
+
 toDoForm.addEventListener("submit", toDoSubmit);
+
 if (localStorage.getItem("toDoDB") != null) {
   const listData = JSON.parse(localStorage.getItem("toDoDB"));
   listData.forEach(paintToDo);
@@ -31,25 +42,26 @@ function paintToDo(toDoObj) {
   const toDoList = document.body.querySelector("#toDoList");
   const li = document.createElement("li");
   const div = document.createElement("div");
-  makeStrikeBtn(div); //원래꺼
+  makeStrikeBtn(div);
   objToLi(div, toDoObj);
   li.appendChild(div);
   makeDelBtn(li);
 
-  toDoList.appendChild(li); //원래꺼
+  toDoList.appendChild(li);
 
   textInput.value = "";
 }
 
 function toDoSubmit(event) {
   event.preventDefault();
-  const toDoObj = { text: textInput.value, id: Date.now() };
-  toDoArray.push(toDoObj);
-  arrToLocal();
-  paintToDo(toDoObj);
-  updateRestCount();
+  if (textInput.value.trim() != "") {
+    const toDoObj = { text: textInput.value, id: Date.now() };
+    toDoArray.push(toDoObj);
+    arrToLocal();
+    paintToDo(toDoObj);
+    updateRestCount();
+  }
 }
-
 function arrToLocal() {
   localStorage.setItem("toDoDB", JSON.stringify(toDoArray));
 }
@@ -84,7 +96,7 @@ function strike(event) {
 function makeDelBtn(li) {
   const delBtn = document.createElement("button");
   li.appendChild(delBtn);
-  delBtn.innerText = "X";
+  delBtn.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
   delBtn.addEventListener("click", deleteToDo);
 }
 function deleteToDo(event) {
@@ -111,7 +123,7 @@ function updateRestCount() {
   if (toDoDBCount - checkedDBCount !== 0) {
     rest.innerText = toDoDBCount - checkedDBCount + "개의 할 일이 있습니다";
   } else {
-    rest.innerText = "할 일을 추가하세요.";
+    rest.innerText = "할 일이 없습니다.";
   }
 }
 
