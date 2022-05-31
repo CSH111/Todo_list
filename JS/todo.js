@@ -1,9 +1,9 @@
-// "use strict";
+"use strict";
 
 const toDoForm = document.body.querySelector("form#toDoForm");
 const textInput = document.body.querySelector("form#toDoForm #textInput");
 const submitBtn = document.body.querySelector("form#toDoForm #submitBtn");
-const ul = document.body.querySelector("toDoList");
+//
 let toDoArray = [];
 let strikedArray = [];
 
@@ -15,10 +15,10 @@ textInput.onkeyup = () => {
     submitBtn.classList.remove("active");
   }
 };
-
+console.log(localStorage.getItem("toDoDB"));
 toDoForm.addEventListener("submit", toDoSubmit);
 
-if (localStorage.getItem("toDoDB") != null) {
+if (localStorage.getItem("toDoDB") !== null) {
   const listData = JSON.parse(localStorage.getItem("toDoDB"));
   listData.forEach(paintToDo);
   toDoArray = listData;
@@ -60,6 +60,12 @@ function toDoSubmit(event) {
     arrToLocal();
     paintToDo(toDoObj);
     updateRestCount();
+
+    const ul = document.body.querySelector("#toDoList");
+    ul.scrollTo({
+      top: ul.scrollHeight,
+      behavior: "smooth",
+    });
   }
 }
 function arrToLocal() {
