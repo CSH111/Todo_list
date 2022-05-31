@@ -1,3 +1,6 @@
+.hidden {
+  display: none;
+}
 .strike {
   text-decoration: line-through;
   font-style: italic;
@@ -46,12 +49,30 @@ body {
 h1 {
   font-size: 50px;
   padding: 0 var(--margin-mid);
+  margin-bottom: var(--margin-small);
+}
+#meta {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--padding-side);
+  margin-bottom: var(--margin-small);
+}
+#meta > h2 {
+  padding: var(--margin-small);
+}
+#meta > button {
+  width: 10%;
+  padding: var(--margin-small);
+  background-color: #ef9a9a37;
+  border-radius: var(--radius);
+}
+
+#meta > button:hover {
+  background-color: rgba(254, 99, 9, 0.838);
+  transition: background-color 0.3s;
 }
 h2 {
   font-size: var(--font-size-small);
-  padding: 10px 0 0 20px;
-
-  margin-bottom: var(--margin-small);
 }
 
 #toDoList {
@@ -79,9 +100,9 @@ li > div {
 li > div > button {
   width: 11%;
   background-color: #ef9a9a37;
+  border-radius: var(--radius);
   padding: var(--margin-small);
   margin-right: var(--margin-small);
-  border-radius: var(--radius);
 }
 li > div > button:hover {
   background-color: rgba(41, 204, 150, 0.588);

@@ -3,6 +3,7 @@
 const toDoForm = document.body.querySelector("form#toDoForm");
 const textInput = document.body.querySelector("form#toDoForm #textInput");
 const submitBtn = document.body.querySelector("form#toDoForm #submitBtn");
+const lis = document.querySelector("#toDoList").childNodes;
 //
 let toDoArray = [];
 let strikedArray = [];
@@ -15,7 +16,7 @@ textInput.onkeyup = () => {
     submitBtn.classList.remove("active");
   }
 };
-console.log(localStorage.getItem("toDoDB"));
+
 toDoForm.addEventListener("submit", toDoSubmit);
 
 if (localStorage.getItem("toDoDB") !== null) {
@@ -24,8 +25,6 @@ if (localStorage.getItem("toDoDB") !== null) {
   toDoArray = listData;
   const strikedData = JSON.parse(localStorage.getItem("striked"));
   strikedArray = strikedData;
-
-  const lis = document.querySelector("#toDoList").childNodes;
 
   for (let i = 0; i < lis.length; i++) {
     if (strikedArray.includes(lis[i].firstChild.id)) {
@@ -37,7 +36,34 @@ if (localStorage.getItem("toDoDB") !== null) {
   strikeArrToLocal(); //빈 array
 }
 updateRestCount();
+handledelAllBtn();
 
+const delAllBtn = document.querySelector("#delAllBtn");
+delAllBtn.addEventListener("click", delAll);
+
+function delAll(event) {
+  event.preventDefault;
+  const ul = document.querySelector("#toDoList");
+  while (ul.firstChild) {
+    ul.removeChild(ul.firstChild);
+  }
+  localStorage.clear();
+  toDoArray = [];
+  strikedArray = [];
+  arrToLocal(); //빈 array
+  strikeArrToLocal(); //빈 array
+  updateRestCount();
+}
+
+function handledelAllBtn() {
+  const delAllBtn = document.querySelector("#delAllBtn");
+  if (lis.length < 2) {
+    ////////////////////////
+    delAllBtn.classList.add("hidden");
+  } else {
+    delAllBtn.classList.remove("hidden");
+  }
+}
 function paintToDo(toDoObj) {
   const toDoList = document.body.querySelector("#toDoList");
   const li = document.createElement("li");
@@ -67,6 +93,7 @@ function toDoSubmit(event) {
       behavior: "smooth",
     });
   }
+  handledelAllBtn();
 }
 function arrToLocal() {
   localStorage.setItem("toDoDB", JSON.stringify(toDoArray));
@@ -113,6 +140,7 @@ function deleteToDo(event) {
   filterStrikeArr(li.firstChild.id);
   strikeArrToLocal();
   updateRestCount();
+  handledelAllBtn();
 }
 function objToLi(div, toDoObj) {
   const span = document.createElement("span");
