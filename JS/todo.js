@@ -5,10 +5,13 @@ const textInput = document.body.querySelector("form#toDoForm #textInput");
 const submitBtn = document.body.querySelector("form#toDoForm #submitBtn");
 const lis = document.querySelector("#toDoList").childNodes;
 //
+
+//
 let toDoArray = [];
 let strikedArray = [];
 
-textInput.focus();
+const focus = () => textInput.focus();
+focus();
 textInput.onkeyup = () => {
   if (textInput.value.trim() != "") {
     submitBtn.classList.add("active");
@@ -36,26 +39,45 @@ if (localStorage.getItem("toDoDB") !== null) {
   strikeArrToLocal(); //빈 array
 }
 updateRestCount();
-handledelAllBtn();
+handleDelAllBtn();
+
+for (let i = 0; i < lis.length; i++) {
+  if (lis[i].firstChild.lastChild.classList.contains("strike") == true) {
+    lis[i].firstChild.firstChild.classList.add("checked");
+  }
+}
+
+const DelLightOn = () => {
+  for (let i = 0; i < lis.length; i++) {
+    lis[i].lastChild.classList.add("readyToDel");
+  }
+};
+const DelLightOff = () => {
+  for (let i = 0; i < lis.length; i++) {
+    lis[i].lastChild.classList.remove("readyToDel");
+  }
+};
 
 const delAllBtn = document.querySelector("#delAllBtn");
 delAllBtn.addEventListener("click", delAll);
+delAllBtn.addEventListener("mouseover", DelLightOn);
+delAllBtn.addEventListener("mouseout", DelLightOff);
 
 function delAll(event) {
   event.preventDefault;
   const ul = document.querySelector("#toDoList");
+
   while (ul.firstChild) {
-    ul.removeChild(ul.firstChild);
+    ul.firstChild.lastChild.click();
   }
-  localStorage.clear();
-  toDoArray = [];
-  strikedArray = [];
-  arrToLocal(); //빈 array
-  strikeArrToLocal(); //빈 array
   updateRestCount();
+  handleDelAllBtn();
+  focus();
 }
 
-function handledelAllBtn() {
+const ul = document.querySelector("#toDoList");
+
+function handleDelAllBtn() {
   const delAllBtn = document.querySelector("#delAllBtn");
   if (lis.length < 2) {
     ////////////////////////
@@ -93,7 +115,8 @@ function toDoSubmit(event) {
       behavior: "smooth",
     });
   }
-  handledelAllBtn();
+  handleDelAllBtn();
+  focus();
 }
 function arrToLocal() {
   localStorage.setItem("toDoDB", JSON.stringify(toDoArray));
@@ -114,16 +137,18 @@ function filterStrikeArr(id) {
 
 function strike(event) {
   const id = event.target.parentElement.id;
-  const classList = event.target.nextSibling.classList;
-  classList.toggle("strike");
+  const textClass = event.target.nextSibling.classList;
+  textClass.toggle("strike");
+  event.target.classList.toggle("checked");
 
-  if (classList.contains("strike") == true) {
+  if (textClass.contains("strike") == true) {
     strikedArray.push(id);
   } else {
     filterStrikeArr(id);
   }
   strikeArrToLocal();
   updateRestCount();
+  focus();
 }
 
 function makeDelBtn(li) {
@@ -140,7 +165,8 @@ function deleteToDo(event) {
   filterStrikeArr(li.firstChild.id);
   strikeArrToLocal();
   updateRestCount();
-  handledelAllBtn();
+  handleDelAllBtn();
+  focus();
 }
 function objToLi(div, toDoObj) {
   const span = document.createElement("span");
