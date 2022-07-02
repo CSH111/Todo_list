@@ -68,15 +68,14 @@ h1 {
   padding: var(--margin-small);
   background-color: #ef9a9a37;
   border-radius: var(--radius);
+  transition: all 0.2s;
 }
 .readyToDel {
   background-color: rgba(254, 99, 9, 0.838);
-  transition: background-color 0.3s;
 }
 
 #meta > button:hover {
   background-color: rgba(254, 99, 9, 0.838);
-  transition: background-color 0.3s;
 }
 h2 {
   font-size: var(--font-size-small);
@@ -110,10 +109,11 @@ li > div > button {
   padding: var(--margin-small);
   margin-right: var(--margin-small);
   color: rgba(128, 128, 128, 0.503);
+  transition: all 0.3s;
 }
 li > div > button:hover {
   background-color: rgba(41, 204, 150, 0.588);
-  transition: background-color 0.3s;
+
   color: black;
 }
 li > div > button:active {
@@ -131,6 +131,7 @@ li > div > span {
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
   padding: var(--padding-box);
+  transition: all 0.2s;
 }
 .strike {
   text-decoration: line-through;
@@ -145,10 +146,10 @@ li > button {
   border: none;
   padding: var(--margin-small);
   border-radius: var(--radius);
+  transition: all 0.2s;
 }
 li > button:hover {
   background-color: rgba(254, 99, 9, 0.838);
-  transition: background-color 0.3s;
 }
 #toDoForm {
   display: flex;
@@ -182,10 +183,10 @@ li > button:hover {
   background-color: rgba(190, 190, 190, 0.512);
   opacity: 1;
   pointer-events: auto;
+  transition: all 0.2s;
 }
 #toDoForm button.active:hover {
   background-color: rgb(190, 190, 190);
-  transition: background-color 0.3s;
 }
 footer {
   text-align: center;
